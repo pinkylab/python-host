@@ -225,6 +225,7 @@ def trigger_device(device):
             meterTemp = tempInt + tempFra
             meterHumi = int(data[6:8], 16) % 128
             print("Meter[%s] %.1f'C %d%%" % (mac, meterTemp, meterHumi))
+            print(sys.argv[4])
         else:
             print('Error!')
     elif dev_type == 'Curtain':
