@@ -17,7 +17,8 @@ import sys
 from bluepy.btle import Scanner, DefaultDelegate
 import binascii
 import copy
-import datetime
+from datetime import datetime, timedelta
+import requests
 
 
 class ScanDelegate(DefaultDelegate):
@@ -225,7 +226,11 @@ def trigger_device(device):
             meterTemp = tempInt + tempFra
             meterHumi = int(data[6:8], 16) % 128
             print("Meter[%s] %.1f'C %d%%" % (mac, meterTemp, meterHumi))
+
+            # コマンドライン引数の最後にURLをいれて、そこに対してスプシへの書込み処理を行う
             print(sys.argv[4])
+            send_spreadsheet(sys.argv[4], meterTemp, meterHumi)
+            
         else:
             print('Error!')
     elif dev_type == 'Curtain':
@@ -241,6 +246,22 @@ def trigger_device(device):
     con.sendline('quit')
     print('Complete')
 
+def send_spreadsheet(url, temp, humi):
+    #現在時刻を取得
+    date = datetime.today()
+
+    deviceName = 'sheet1'#←スプレッドシートのシート名と同じ名前にする
+    #POSTするデータ
+    data = {
+        'DeviceName': deviceName,
+        'Date': str(date),
+        'SensorType': str('SwitchBot'),
+        'Temperature': str(temp),
+        'Humidity': str(humi),
+    }
+
+    #APIにデータをPOST
+    response = requests.post(url, data=data)
 
 def main():
     # Check bluetooth dongle
