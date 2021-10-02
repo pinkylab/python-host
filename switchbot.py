@@ -230,7 +230,7 @@ def trigger_device(device):
             # コマンドライン引数の最後にURLをいれて、そこに対してスプシへの書込み処理を行う
             print(sys.argv[4])
             send_spreadsheet(sys.argv[4], meterTemp, meterHumi)
-            
+
         else:
             print('Error!')
     elif dev_type == 'Curtain':
@@ -247,14 +247,12 @@ def trigger_device(device):
     print('Complete')
 
 def send_spreadsheet(url, temp, humi):
-    #現在時刻を取得
-    date = datetime.today()
 
     deviceName = 'sheet1'#←スプレッドシートのシート名と同じ名前にする
     #POSTするデータ
     data = {
         'DeviceName': deviceName,
-        'Date': str(date),
+        'Date': str(datetime.today()),
         'SensorType': str('SwitchBot'),
         'Temperature': str(temp),
         'Humidity': str(humi),
