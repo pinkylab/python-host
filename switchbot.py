@@ -1,3 +1,4 @@
+# coding: UTF-8
 #!/usr/bin/env python
 # Copyright 2017-present WonderLabs, Inc. <support@wondertechlabs.com>
 #
